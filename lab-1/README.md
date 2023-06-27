@@ -85,8 +85,8 @@ Before instrumenting the app, let's see how it behaves on its own. This will hel
 Questions to explore:
 
 * What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/2-traces/requirements.txt) file.
-* How did the code change in `app.py`?
-* How did the environment variables change in `Dockerfile`?
+* How did the code change in [`app.py`](python-flask/2-traces/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/2-traces/Dockerfile)?
 
 Things to know:
 
@@ -161,9 +161,9 @@ Best practices:
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the `requirements.txt` file.
-* How did the code change in `app.py`?
-* How did the environment variables change in `Dockerfile`?
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/3-metrics/requirements.txt) file.
+* How did the code change in [`app.py`](python-flask/3-metrics/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/3-metrics/app.py)?
 * How do these changes compare with the traces instrumentation?
 
 Things to know:
@@ -240,9 +240,9 @@ Things to know:
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the `requirements.txt` file.
-* How did the code change in `app.py`?
-* How did the environment variables change in `Dockerfile`?
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/4-logs/requirements.txt) file.
+* How did the code change in [`app.py`](python-flask/4-logs/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/4-logs/Dockerfile)?
 * How do these changes compare with the traces and metrics instrumentations?
 
 Things to know:
@@ -376,7 +376,7 @@ Some languages can be instrumented with without modifying the application code. 
 Questions to explore:
 
 * What files changed?
-* How did `Dockerfile` change?
+* How did [`Dockerfile`](java-springboot/2-complete-auto/Dockerfile) change?
 * How does the telemetry data in Java compare to Python?
 
 
