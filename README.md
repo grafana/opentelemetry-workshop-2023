@@ -20,6 +20,12 @@ Verify your installations by running these commands in your terminal:
 * `docker --version` (expected output: `20.10.12` or higher)
 * `docker-compose --version` (expected output: `1.29.2` or higher)
 
+You will need to clone this repository:
+
+```sh
+git clone https://github.com/grafana/opentelemetry-workshop.git
+```
+
 Your laptop or VM will need outbound public internet access to these hostnames, protocols, and ports:
 
 * *.docker.com (HTTPS/443)
