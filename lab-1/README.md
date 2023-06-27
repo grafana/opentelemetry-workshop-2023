@@ -66,7 +66,7 @@ You can control the app using these endpoints:
 
 Before instrumenting the app, let's see how it behaves on its own. This will help us understand the effect of each instrumentation in the next sections of the lab.
 
-**Step 1.** Review the app code in a text editor: `lab-1/python-flask/app.py`
+**Step 1.** Review the app code in a text editor: [`python-flask/1-bare/app.py`](python-flask/1-bare/app.py)
 
 **Step 2.** Run the app: `APP=python-flask/1-bare docker-compose up --build`
 
@@ -84,7 +84,7 @@ Before instrumenting the app, let's see how it behaves on its own. This will hel
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the `requirements.txt` file.
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/2-traces/requirements.txt) file.
 * How did the code change in `app.py`?
 * How did the environment variables change in `Dockerfile`?
 
@@ -327,9 +327,9 @@ Some languages can be instrumented with without modifying the application code. 
 
 **Step 1.** Review the app code in a text editor:
 
-* `lab-1/java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/App.java`
-* `lab-1/java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java`
-* `lab-1/java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java`
+* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/App.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/App.java)
+* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java)
+* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java)
 
 **Step 2.** Run the app: `APP=java-springboot/1-bare docker-compose up --build`
 
