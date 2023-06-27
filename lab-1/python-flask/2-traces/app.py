@@ -16,15 +16,15 @@ app = flask.Flask(__name__)
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 FlaskInstrumentor().instrument_app(app)
 
-# Handle requests to http://localhost:4321/error
-@app.route('/error')
-def error():
-    return eval('0/0')
-
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
     return 'ok'
+
+# Handle requests to http://localhost:4321/error
+@app.route('/error')
+def error():
+    return eval('0/0')
 
 # Run the app when executing this file
 if __name__ == '__main__':

@@ -17,16 +17,16 @@ counter = meter.create_counter('custom_counter')
 import flask
 app = flask.Flask(__name__)
 
-# Handle requests to http://localhost:4321/error
-@app.route('/error')
-def error():
-    return eval('0/0')
-
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
     counter.add(1) # Invoke custom metric counter
     return 'ok'
+
+# Handle requests to http://localhost:4321/error
+@app.route('/error')
+def error():
+    return eval('0/0')
 
 # Run the app when executing this file
 if __name__ == '__main__':
