@@ -19,7 +19,7 @@ Lab 1 introduces the fundamentals of [instrumentation](https://opentelemetry.io/
 
 You will see how to instrument traces, metrics, and logs with a clear and systematic set of instructions. Lab 1 does not ship data to external destinations – that is covered in [Lab 2](.lab-2). You will see the data in your terminal in Lab 1.
 
-The lab uses an app implemented in three programming languages and app frameworks:
+The lab uses an app implemented in two programming languages and app frameworks:
 
 * **Python** using the [Flask](https://flask.palletsprojects.com/en/2.3.x/) framework ([`python-flask`](python-flask))
 * **Java** using the [Spring Boot](https://spring.io/projects/spring-boot) framework ([`java-springboot`](java-springboot))
