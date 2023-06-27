@@ -105,7 +105,8 @@ Best practices:
 **Step 4.** View the app logs in your terminal. Notice that the traces appear in the terminal.
 
 <details>
-<summary>*View sample trace logs*</summary>
+<summary>View sample trace logs</summary>
+
 ```json
 {
   "name": "/",
@@ -178,7 +179,8 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice that the metrics appear in the terminal every 5 seconds, as instructed by the `5000ms` export interval.
 
 <details>
-<summary>*View sample metric logs*</summary>
+<summary>View sample metric logs</summary>
+
 ```json
 {
   "resource_metrics": [
@@ -255,7 +257,8 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice where the original log messages are stored, and the default metadata that is included in the logs.
 
 <details>
-<summary>*View sample logs*</summary>
+<summary>View sample logs</summary>
+
 ```json
 {
   "body": "\u001b[31m\u001b[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.\u001b[0m\n * Running on all addresses (0.0.0.0)\n * Running on http://127.0.0.1:4321\n * Running on http://172.27.0.2:4321",
@@ -348,7 +351,8 @@ Some languages can be instrumented with without modifying the application code. 
 **Step 4.** View the app logs in your terminal.
 
 <details>
-<summary>*View sample trace logs*</summary>
+<summary>View sample trace logs</summary>
+
 ```sh
 [otel.javaagent 2023-06-27 13:17:37:463 +0000] [http-nio-4321-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'AppController.index' : d3572661fa424301e427d9135ba938bc e9eb751209030116 INTERNAL [tracer: io.opentelemetry.spring-webmvc-3.1:1.27.0-alpha] AttributesMap{data={thread.id=22, thread.name=http-nio-4321-exec-1}, capacity=128, totalAddedValues=2}
 [otel.javaagent 2023-06-27 13:17:37:466 +0000] [http-nio-4321-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'GET /' : d3572661fa424301e427d9135ba938bc 8baa428d9ff7d08e SERVER [tracer: io.opentelemetry.tomcat-7.0:1.27.0-alpha] AttributesMap{data={thread.id=22, net.protocol.name=http, net.sock.peer.port=64236, http.method=GET, http.scheme=http, net.protocol.version=1.1, net.host.port=4321, http.response_content_length=2, net.sock.host.addr=172.28.0.2, http.status_code=200, http.route=/, thread.name=http-nio-4321-exec-1, user_agent.original=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36, net.host.name=localhost, http.target=/, net.sock.peer.addr=172.28.0.1}, capacity=128, totalAddedValues=16}
@@ -356,7 +360,8 @@ Some languages can be instrumented with without modifying the application code. 
 </details>
 
 <details>
-<summary>*View sample metric logs*</summary>
+<summary>View sample metric logs</summary>
+
 ```sh
 [otel.javaagent 2023-06-27 13:18:15:214 +0000] [PeriodicMetricReader-1] INFO io.opentelemetry.exporter.logging.LoggingMetricExporter - Received a collection of 19 metrics for export.
 [otel.javaagent 2023-06-27 13:18:15:215 +0000] [PeriodicMetricReader-1] INFO io.opentelemetry.exporter.logging.LoggingMetricExporter - metric: ImmutableMetricData{resource=Resource{schemaUrl=https://opentelemetry.io/schemas/1.20.0, attributes={container.id="a8957f6746758bcb57b91ed77064a437fd8cf24e15fe705318fb7bef246580cd", host.arch="aarch64", host.name="a8957f674675", os.description="Linux 5.10.76-linuxkit", os.type="linux", process.command_args=[/opt/java/openjdk/bin/java, -jar, /data/app-0.1.0.jar, --server.port=4321], process.executable.path="/opt/java/openjdk/bin/java", process.pid=8, process.runtime.description="Eclipse Adoptium OpenJDK 64-Bit Server VM 11.0.19+7", process.runtime.name="OpenJDK Runtime Environment", process.runtime.version="11.0.19+7", service.name="java-springboot", telemetry.auto.version="1.27.0", telemetry.sdk.language="java", telemetry.sdk.name="opentelemetry", telemetry.sdk.version="1.27.0"}}, instrumentationScopeInfo=InstrumentationScopeInfo{name=io.opentelemetry.runtime-telemetry-java8, version=1.27.0-alpha, schemaUrl=null, attributes={}}, name=process.runtime.jvm.memory.committed, description=Measure of memory committed, unit=By, type=LONG_SUM, data=ImmutableSumData{points=[ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="CodeHeap 'non-nmethods'", type="non_heap"}, value=2555904, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="CodeHeap 'non-profiled nmethods'", type="non_heap"}, value=4587520, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="Compressed Class Space", type="non_heap"}, value=6762496, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="G1 Eden Space", type="heap"}, value=88080384, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="CodeHeap 'profiled nmethods'", type="non_heap"}, value=16842752, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="Metaspace", type="non_heap"}, value=47919104, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="G1 Old Gen", type="heap"}, value=71303168, exemplars=[]}, ImmutableLongPointData{startEpochNanos=1687871835177876000, epochNanos=1687871895178245000, attributes={pool="G1 Survivor Space", type="heap"}, value=10485760, exemplars=[]}], monotonic=false, aggregationTemporality=CUMULATIVE}}
