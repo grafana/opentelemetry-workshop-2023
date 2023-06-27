@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  app:
+    build: ${APP}
+    ports:
+      - 4321:4321
