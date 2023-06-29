@@ -39,7 +39,7 @@ Using the `git diff` command, you can compare a **bare** app with one of its ins
 Example:
 
 ```sh
-git diff python-flask/1-bare python-flask/2-traces
+git diff --no-index python-flask/1-bare python-flask/2-traces
 ```
 
 To run one of the apps, navigate to `lab-1` and run the command below after changing the value of `path_to_app_directory`:
@@ -80,7 +80,7 @@ Before instrumenting the app, let's see how it behaves on its own. This will hel
 <a name="lab-1.2-traces-instrumentation"></a>
 ## Lab 1.2 - Traces instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff python-flask/1-bare python-flask/2-traces`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index python-flask/1-bare python-flask/2-traces`
 
 Questions to explore:
 
@@ -157,7 +157,7 @@ Best practices:
 <a name="lab-1.3-metrics-instrumentation"></a>
 ## Lab 1.3 - Metrics instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with metrics instrumentation: `git diff python-flask/1-bare python-flask/3-metrics`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with metrics instrumentation: `git diff --no-index python-flask/1-bare python-flask/3-metrics`
 
 Questions to explore:
 
@@ -236,7 +236,7 @@ Things to know:
 <a name="lab-1.4-logs-instrumentation"></a>
 ## Lab 1.4 - Logs instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff python-flask/1-bare python-flask/4-logs`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/1-bare python-flask/4-logs`
 
 Questions to explore:
 
@@ -302,7 +302,7 @@ Things to know:
 <a name="lab-1.5-complete-instrumentation"></a>
 ## Lab 1.5 - Complete instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff python-flask/1-bare python-flask/5-complete`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/1-bare python-flask/5-complete`
 
 **Step 2.** Run the app: `APP=python-flask/5-complete docker-compose up --build`
 
@@ -342,7 +342,7 @@ Some languages can be instrumented with without modifying the application code. 
 
 ### Compare the Java app with automatic instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff java-springboot/1-bare java-springboot/2-complete-auto`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index java-springboot/1-bare java-springboot/2-complete-auto`
 
 **Step 2.** Run the app: `APP=java-springboot/1-bare docker-compose up --build`
 

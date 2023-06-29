@@ -1,6 +1,6 @@
 # OpenTelemetry Workshop
 
-*OTel is easy! Here's how.*
+*OTel makes it easy! Here's how.*
 
 * [Lab 1 - Instrumentation](lab-1)
 * [Lab 2 - Collection & Transport](lab-2)
