@@ -1,0 +1,51 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        
+processors:
+  batch:
+
+exporters:
+  otlp:
+    auth:
+      authenticator: basicauth/traces
+    endpoint: ${env:GRAFANA_STACK_TEMPO_URL}
+  prometheusremotewrite:
+    auth:
+      authenticator: basicauth/metrics
+    endpoint: ${env:GRAFANA_STACK_PROMETHEUS_URL}
+  loki:
+    auth:
+      authenticator: basicauth/logs
+    endpoint: ${env:GRAFANA_STACK_LOKI_URL}
+    
+extensions:
+  basicauth/traces:
+    client_auth:
+      username: ${GRAFANA_STACK_TEMPO_USERNAME}
+      password: ${GRAFANA_STACK_TEMPO_PASSWORD}
+  basicauth/metrics:
+    client_auth:
+      username: ${GRAFANA_STACK_PROMETHEUS_USERNAME}
+      password: ${GRAFANA_STACK_PROMETHEUS_PASSWORD}
+  basicauth/logs:
+    client_auth:
+      username: ${GRAFANA_STACK_LOKI_USERNAME}
+      password: ${GRAFANA_STACK_LOKI_PASSWORD}
+        
+service:
+  extensions: [ basicauth/traces, basicauth/metrics, basicauth/logs ]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheusremotewrite]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loki]

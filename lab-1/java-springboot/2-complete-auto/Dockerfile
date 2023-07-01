@@ -17,14 +17,17 @@ ENV OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME:-java-springboot}
 ARG OTEL_TRACES_EXPORTER
 ARG OTEL_METRICS_EXPORTER
 ARG OTEL_LOGS_EXPORTER
+ARG OTEL_SERVICE_NAME
 ENV OTEL_TRACES_EXPORTER=${OTEL_TRACES_EXPORTER:-logging}
-ENV OTEL_METRICS_EXPORTER=${OTEL_TRACES_EXPORTER:-logging}
-ENV OTEL_LOGS_EXPORTER=${OTEL_TRACES_EXPORTER:-logging}
+ENV OTEL_METRICS_EXPORTER=${OTEL_METRICS_EXPORTER:-logging}
+ENV OTEL_LOGS_EXPORTER=${OTEL_LOGS_EXPORTER:-logging}
+ENV OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME:-java-springboot}
 
 # Instrument app
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.27.0/opentelemetry-javaagent.jar .
-ENV JAVA_TOOL_OPTIONS "-javaagent:./opentelemetry-javaagent.jar "
+ENV JAVA_TOOL_OPTIONS "-javaagent:./opentelemetry-javaagent.jar"
 
 # Run app
-CMD java -jar /data/app-0.1.0.jar --server.port=4321
+ENV JAVA_OPTS "-Dlogging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG"
+CMD java -jar /data/app-0.1.0.jar --server.port=4321 --debug
 EXPOSE 4321

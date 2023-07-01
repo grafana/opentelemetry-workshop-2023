@@ -1,0 +1,75 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+otelcol.receiver.otlp "default" {
+  grpc {}
+  output {
+    traces  = [otelcol.processor.batch.default.input]
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+  output {
+    traces  = [otelcol.exporter.otlp.default.input]
+    metrics = [otelcol.exporter.prometheus.default.input]
+    logs    = [otelcol.exporter.loki.default.input]
+  }
+}
+
+otelcol.exporter.loki "default" {
+	forward_to = [loki.process.default.receiver]
+}
+
+otelcol.exporter.prometheus "default" {
+	forward_to = [prometheus.remote_write.default.receiver]
+}
+
+otelcol.exporter.otlp "default" {
+	client {
+    auth = otelcol.auth.basic.default.handler
+		endpoint = env("GRAFANA_STACK_TEMPO_URL")
+	}
+}
+
+otelcol.auth.basic "default" {
+	username = env("GRAFANA_STACK_TEMPO_USERNAME")
+	password = env("GRAFANA_STACK_TEMPO_PASSWORD")
+}
+
+prometheus.remote_write "default" {
+	endpoint {
+		url = env("GRAFANA_STACK_PROMETHEUS_URL")
+		basic_auth {
+			username = env("GRAFANA_STACK_PROMETHEUS_USERNAME")
+			password = env("GRAFANA_STACK_PROMETHEUS_PASSWORD")
+		}
+	}
+}
+
+loki.process "default" {
+  forward_to = [loki.write.default.receiver]
+  stage.json {
+    expressions = {
+      job = "resources.\"service.name\"",
+    }
+  }
+  stage.labels {
+    values = {
+      job = "job",
+    }
+  }
+}
+
+loki.write "default" {
+	endpoint {
+		url = env("GRAFANA_STACK_LOKI_URL")
+		basic_auth {
+			username = env("GRAFANA_STACK_LOKI_USERNAME")
+			password = env("GRAFANA_STACK_LOKI_PASSWORD")
+		}
+	}
+}

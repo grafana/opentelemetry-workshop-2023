@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  app:
+    build: ../../lab-1/java-springboot/2-complete-auto
+    ports:
+      - 4321:4321
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317:4317
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - GRAFANA_STACK_LOKI_URL=${GRAFANA_STACK_LOKI_URL}
+      - GRAFANA_STACK_LOKI_USERNAME=${GRAFANA_STACK_LOKI_USERNAME}
+      - GRAFANA_STACK_LOKI_PASSWORD=${GRAFANA_STACK_LOKI_PASSWORD}
+      - GRAFANA_STACK_PROMETHEUS_URL=${GRAFANA_STACK_PROMETHEUS_URL}
+      - GRAFANA_STACK_PROMETHEUS_USERNAME=${GRAFANA_STACK_PROMETHEUS_USERNAME}
+      - GRAFANA_STACK_PROMETHEUS_PASSWORD=${GRAFANA_STACK_PROMETHEUS_PASSWORD}
+      - GRAFANA_STACK_TEMPO_URL=${GRAFANA_STACK_TEMPO_URL}
+      - GRAFANA_STACK_TEMPO_USERNAME=${GRAFANA_STACK_TEMPO_USERNAME}
+      - GRAFANA_STACK_TEMPO_PASSWORD=${GRAFANA_STACK_TEMPO_PASSWORD}
+    logging:
+      driver: none
+      

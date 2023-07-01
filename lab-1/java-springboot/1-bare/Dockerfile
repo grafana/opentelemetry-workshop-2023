@@ -8,5 +8,6 @@ FROM eclipse-temurin:11
 COPY --from=maven_build /tmp/target/app-0.1.0.jar /data/app-0.1.0.jar
 
 # Run app
-CMD java -jar /data/app-0.1.0.jar --server.port=4321
+ENV JAVA_OPTS "-Dlogging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=DEBUG"
+CMD java -jar /data/app-0.1.0.jar --server.port=4321 --debug
 EXPOSE 4321

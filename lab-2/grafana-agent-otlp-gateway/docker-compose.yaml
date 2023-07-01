@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  app:
+    build: ../../lab-1/java-springboot/2-complete-auto
+    ports:
+      - 4321:4321
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+  otel-collector:
+    image: grafana/agent:v0.34.3
+    ports:
+      - 4317:4317
+    volumes:
+      - ./grafana-agent-config.river:/etc/agent/config.river
+    command:
+      - run
+      - /etc/agent/config.river
+    environment:
+      - AGENT_MODE=flow
+      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
+      - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
+      
