@@ -8,6 +8,7 @@
 * [Lab 2.3 - Grafana Agent to Grafana Stack](#lab-2.3-grafana-agent-to-grafana-stack)
 * [Lab 2.4 - Grafana Agent to OTLP Gateway](#lab-2.4-grafana-agent-to-otlp-gateway)
 
+
 <a name="preface"></a>
 ## Preface
 
