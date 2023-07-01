@@ -91,7 +91,7 @@ Questions to explore:
 Things to know:
 
 * The app uses a `BatchSpanProcessor` for each exporter.
-* The app uses two exporters: `ConsoleSpanExporter` and `OTLPSpanExporter`. This means the app will send spans to two destinations: the terminal (i.e. `stdout`) and an OTLP endpoint.
+* The app uses a `ConsoleSpanExporter` to send spans to the terminal (i.e. `stdout`).
 * The app uses `FlaskInstrumentor` to auto-instrument the web app framework.
 
 Best practices:
@@ -169,7 +169,7 @@ Questions to explore:
 Things to know:
 
 * The app uses a `PeriodicExportingMetricReader` for each exporter. Notice the configurable export interval that is set to `5000ms`.
-* The app uses two exporters: `ConsoleMetricExporter` and `OTLPMetricExporter`. These serve the same purposes as `ConsoleSpanExporter` and `OTLPSpanExporter` from the traces instrumentation.
+* The app uses a `ConsoleMetricExporter` that serves the same purpose as the `ConsoleSpanExporter` from the traces instrumentation.
 * The app uses a custom `meter` to track and increment the number of requests to the `/` handler.
 
 **Step 2.** Run the app: `APP=python-flask/3-metrics docker-compose up --build`
@@ -248,7 +248,7 @@ Questions to explore:
 Things to know:
 
 * The app uses a `BatchLogRecordProcessor` for each exporter.
-* The app uses two exporters: `ConsoleLogExporter` and `OTLPLogExporter`. These serve the same purposes as `ConsoleSpanExporter` and `OTLPSpanExporter` from the traces instrumentation.
+* The app uses a `ConsoleLogExporter` that serves the same purpose as the `ConsoleSpanExporter` from the traces instrumentation.
 
 **Step 2.** Run the app: `APP=python-flask/4-logs docker-compose up --build`
 

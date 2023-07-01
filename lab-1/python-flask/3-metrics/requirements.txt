@@ -4,4 +4,3 @@ flask==2.3.2
 # OTel dependencies
 opentelemetry-api==1.18.0
 opentelemetry-sdk==1.18.0
-opentelemetry-exporter-otlp==1.18.0

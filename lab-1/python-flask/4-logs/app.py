@@ -1,11 +1,9 @@
 ####  OpenTelemetry logs configuration  ########################################
 from opentelemetry._logs import set_logger_provider
-from opentelemetry.exporter.otlp.proto.http._log_exporter import OTLPLogExporter
 from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
 from opentelemetry.sdk._logs.export import BatchLogRecordProcessor, ConsoleLogExporter
 logger_provider = LoggerProvider()
-logger_provider.add_log_record_processor(BatchLogRecordProcessor(ConsoleLogExporter())) # Remove this in production
-#logger_provider.add_log_record_processor(BatchLogRecordProcessor(OTLPLogExporter())) # Use this in production
+logger_provider.add_log_record_processor(BatchLogRecordProcessor(ConsoleLogExporter()))
 set_logger_provider(logger_provider)
 
 # Logging instrumentation

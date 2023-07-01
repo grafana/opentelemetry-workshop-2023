@@ -1,11 +1,9 @@
 ####  OpenTelemetry metrics configuration  #####################################
-from opentelemetry.exporter.otlp.proto.http.metric_exporter import OTLPMetricExporter
 from opentelemetry.metrics import get_meter_provider, set_meter_provider
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
 meter_provider = MeterProvider(metric_readers=[
-    PeriodicExportingMetricReader(ConsoleMetricExporter(), export_interval_millis=5000), # Remove this in production
-    #PeriodicExportingMetricReader(OTLPMetricExporter(), export_interval_millis=5000) # Use this in production
+    PeriodicExportingMetricReader(ConsoleMetricExporter(), export_interval_millis=5000)
 ])
 set_meter_provider(meter_provider)
 

@@ -1,11 +1,9 @@
 ####  OpenTelemetry traces configuration  ######################################
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 from opentelemetry.trace import set_tracer_provider
 tracer_provider = TracerProvider()
-tracer_provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter())) # Remove this in production
-#tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter())) # Use this in production
+tracer_provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
 set_tracer_provider(tracer_provider)
 
 # Configure app
