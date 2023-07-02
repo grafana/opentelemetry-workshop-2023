@@ -1,4 +1,4 @@
-# Lab 2. Collection & Transport
+# Lab 2. Collection
 
 ## Contents
 

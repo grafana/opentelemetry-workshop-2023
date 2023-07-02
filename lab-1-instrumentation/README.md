@@ -17,7 +17,7 @@
 
 Lab 1 introduces the fundamentals of [instrumentation](https://opentelemetry.io/docs/instrumentation/) with OpenTelemetry.
 
-You will see how to instrument traces, metrics, and logs with a clear and systematic set of instructions. Lab 1 does not ship data to external destinations – that is covered in [Lab 2](.lab-2). You will see the data in your terminal in Lab 1.
+You will see how to instrument traces, metrics, and logs with a clear and systematic set of instructions. Lab 1 does not ship data to external destinations – that is covered in [Lab 2](../lab-2-collection). You will see the data in your terminal in Lab 1.
 
 The lab uses an app implemented in two programming languages and app frameworks:
 
@@ -32,7 +32,7 @@ Each app contains five variants:
 * **Logs** - Logs instrumentation
 * **Complete** - All three instrumentations with correlations
 
-The lab will run commands in the terminal. You will need to navigate into the `lab-1` directory and run the commands from there.
+The lab will run commands in the terminal. You will need to navigate into the `lab-1-instrumentation` directory and run the commands from there.
 
 Using the `git diff` command, you can compare a **bare** app with one of its instrumentation variants. This lets you see exactly what steps were needed to instrument traces, metrics, or logs. Nothing more, nothing less.
 
@@ -42,7 +42,7 @@ Example:
 git diff --no-index python-flask/bare python-flask/traces
 ```
 
-To run one of the apps, navigate to `lab-1` and run the command below after changing the value of `path_to_app_directory`:
+To run one of the apps, navigate to `lab-1-instrumentation` and run the command below after changing the value of `path_to_app_directory`:
 
 ```sh
 APP=path_to_app_directory docker-compose up --build

@@ -3,8 +3,8 @@
 *OTel makes it easy! Here's how.*
 
 * [Prerequisites](#prerequisites)
-* [Lab 1 - Instrumentation](lab-1)
-* [Lab 2 - Collection & Transport](lab-2)
+* [Lab 1 - Instrumentation](lab-1-instrumentation)
+* [Lab 2 - Collection](lab-2-collection)
 
 
 <a name="prerequisites"></a>

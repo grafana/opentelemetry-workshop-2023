@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app:
-    build: ../../lab-1/java-springboot/complete-auto
+    build: ../../lab-1-instrumentation/java-springboot/complete-auto
     ports:
       - 4321:4321
     environment:
