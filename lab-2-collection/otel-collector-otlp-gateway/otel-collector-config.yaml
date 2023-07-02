@@ -15,8 +15,8 @@ exporters:
 extensions:
   basicauth:
     client_auth:
-      username: ${GRAFANA_CLOUD_INSTANCE_ID}
-      password: ${GRAFANA_CLOUD_API_KEY}
+      username: ${env:GRAFANA_CLOUD_INSTANCE_ID}
+      password: ${env:GRAFANA_CLOUD_API_KEY}
         
 service:
   extensions: [basicauth]

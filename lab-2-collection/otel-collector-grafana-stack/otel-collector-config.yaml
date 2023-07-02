@@ -23,19 +23,19 @@ exporters:
 extensions:
   basicauth/traces:
     client_auth:
-      username: ${GRAFANA_STACK_TEMPO_USERNAME}
-      password: ${GRAFANA_STACK_TEMPO_PASSWORD}
+      username: ${env:GRAFANA_STACK_TEMPO_USERNAME}
+      password: ${env:GRAFANA_STACK_TEMPO_PASSWORD}
   basicauth/metrics:
     client_auth:
-      username: ${GRAFANA_STACK_PROMETHEUS_USERNAME}
-      password: ${GRAFANA_STACK_PROMETHEUS_PASSWORD}
+      username: ${env:GRAFANA_STACK_PROMETHEUS_USERNAME}
+      password: ${env:GRAFANA_STACK_PROMETHEUS_PASSWORD}
   basicauth/logs:
     client_auth:
-      username: ${GRAFANA_STACK_LOKI_USERNAME}
-      password: ${GRAFANA_STACK_LOKI_PASSWORD}
+      username: ${env:GRAFANA_STACK_LOKI_USERNAME}
+      password: ${env:GRAFANA_STACK_LOKI_PASSWORD}
         
 service:
-  extensions: [ basicauth/traces, basicauth/metrics, basicauth/logs ]
+  extensions: [basicauth/traces,basicauth/metrics,basicauth/logs]
   pipelines:
     traces:
       receivers: [otlp]
