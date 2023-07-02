@@ -9,6 +9,7 @@
 * [Lab 1.4 - Logs instrumentation](#lab-1.4-logs-instrumentation)
 * [Lab 1.5 - Complete instrumentation](#lab-1.5-complete-instrumentation)
 * [Lab 1.6 - Automatic instrumentation for Java](#lab-1.6-automatic-instrumentation-for-java)
+* [Lab 1.7 - Resource attributes](#lab-1.7-resource-attributes)
 * [Retrospective](#retrospective)
 
 
@@ -572,6 +573,69 @@ Questions to explore:
 * What files changed?
 * How did [`Dockerfile`](java-springboot/complete-auto/Dockerfile) change?
 * How does the telemetry data in Java compare to Python?
+
+
+<a name="lab-1.7-resource-attributes"></a>
+## Lab 1.7 - Resource attributes
+
+[Resource attributes](https://opentelemetry.io/docs/instrumentation/js/resources/) describe the instrumented entity. Instrumentation libraries will automatically detect certain resource attributes and include them in the telemetry payloads. Here is an example of the resource attributes that were automatically created by the instrumentation libraries in [Lab 1.5](#lab-1.5-complete-instrumentation):
+
+```json
+{
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    ...
+  },
+  ...
+}
+```
+
+Let's change these resource attributes. We'll use [environment variables](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/) to configure the resource attributes. This approach has two benefits: you don't need to change the application code, and you can apply it to any programming language.
+
+**Step 1.** Open the [`env`](env) file in a text editor. Remove the `#` character from the start of each line. Save the file, then close the text editor.
+
+The file now looks like this:
+
+```sh
+OTEL_RESOURCE_ATTRIBUTES=deployment.environment=workshop,service.version=1.0.1,greeting=Hello World!
+OTEL_SERVICE_NAME=myservice
+```
+
+**Step 2.** Run the app: `APP=python-flask/complete docker-compose up --build`
+
+**Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
+
+**Step 4.** View the app logs in your terminal. Look for the resource attributes included in the metrics. They will look like this:
+
+```json
+{
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "deployment.environment": "workshop",
+      "greeting": "Hello World!",
+      "service.version": "1.0.1",
+      "service.name": "myservice"
+    },
+    ...
+  },
+  ...
+}
+```
+
+Notice the following changes:
+
+* [`service.name`](https://opentelemetry.io/docs/specs/otel/resource/semantic_conventions/#service) is a standard resource attribute. The original value was `python-flask` as declared in the [Dockerfile](python-flask/complete/Dockerfile) of the app. This value was overridden to be `myservice` by the [`OTEL_SERVICE_NAME`](https://opentelemetry.io/docs/concepts/sdk-configuration/general-sdk-configuration/#otel_service_name) environment variable in the [`env`](env) file.
+* [`service.version`](https://opentelemetry.io/docs/specs/otel/resource/semantic_conventions/#service) is a standard resource attribute. It was set by the [`OTEL_RESOURCE_ATTRIBUTES`](https://opentelemetry.io/docs/concepts/sdk-configuration/general-sdk-configuration/#otel_resource_attributes) environment variable in the [`env`](env) file.
+* [`deployment.environment`](https://opentelemetry.io/docs/specs/otel/resource/semantic_conventions/deployment_environment/) is a standard resource attribute. It was set by the [`OTEL_RESOURCE_ATTRIBUTES`](https://opentelemetry.io/docs/concepts/sdk-configuration/general-sdk-configuration/#otel_resource_attributes) environment variable in the [`env`](env) file.
+* `greeting` is a custom resource attribute. It was set by the [`OTEL_RESOURCE_ATTRIBUTES`](https://opentelemetry.io/docs/concepts/sdk-configuration/general-sdk-configuration/#otel_resource_attributes) environment variable in the [`env`](env) file.
 
 
 <a name="retrospective"></a>

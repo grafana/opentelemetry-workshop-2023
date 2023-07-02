@@ -1,0 +1,2 @@
+#OTEL_RESOURCE_ATTRIBUTES=deployment.environment=workshop,greeting=Hello World!,service.version=1.0.1
+#OTEL_SERVICE_NAME=myservice

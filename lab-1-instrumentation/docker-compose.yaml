@@ -4,3 +4,4 @@ services:
     build: ${APP}
     ports:
       - 4321:4321
+    env_file: env
