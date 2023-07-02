@@ -588,10 +588,8 @@ Questions to explore:
       "telemetry.sdk.name": "opentelemetry",
       "telemetry.sdk.version": "1.18.0",
       "service.name": "python-flask"
-    },
-    ...
-  },
-  ...
+    }
+  }
 }
 ```
 
@@ -623,10 +621,8 @@ OTEL_SERVICE_NAME=myservice
       "greeting": "Hello World!",
       "service.version": "1.0.1",
       "service.name": "myservice"
-    },
-    ...
-  },
-  ...
+    }
+  }
 }
 ```
 
