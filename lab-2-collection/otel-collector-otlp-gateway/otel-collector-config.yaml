@@ -1,0 +1,35 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        
+processors:
+  batch:
+
+exporters:
+  otlphttp:
+    auth:
+      authenticator: basicauth
+    endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
+    
+extensions:
+  basicauth:
+    client_auth:
+      username: ${GRAFANA_CLOUD_INSTANCE_ID}
+      password: ${GRAFANA_CLOUD_API_KEY}
+        
+service:
+  extensions: [basicauth]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]

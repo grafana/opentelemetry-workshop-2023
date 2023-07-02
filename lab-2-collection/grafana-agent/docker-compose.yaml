@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  app:
+    build: ../../lab-1-instrumentation/java-springboot/complete-auto
+    ports:
+      - 4321:4321
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+  otel-collector:
+    image: grafana/agent:v0.34.3
+    ports:
+      - 4317:4317
+    volumes:
+      - ./grafana-agent-config.river:/etc/agent/config.river
+    command:
+      - run
+      - /etc/agent/config.river
+    environment:
+      - AGENT_MODE=flow
+      

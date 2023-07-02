@@ -1,0 +1,23 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+otelcol.receiver.otlp "default" {
+  grpc {}
+  output {
+    traces  = [otelcol.processor.batch.default.input]
+    metrics = [otelcol.processor.batch.default.input]
+    logs    = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+  output {
+    traces  = [otelcol.exporter.logging.default.input]
+    metrics = [otelcol.exporter.logging.default.input]
+    logs    = [otelcol.exporter.logging.default.input]
+  }
+}
+
+otelcol.exporter.logging "default" {}
