@@ -5,7 +5,6 @@
 * [Prerequisites](#prerequisites)
 * [Lab 1 - Instrumentation](lab-1)
 * [Lab 2 - Collection & Transport](lab-2)
-* [Lab 3 - Usage](lab-3)
 
 
 <a name="prerequisites"></a>
