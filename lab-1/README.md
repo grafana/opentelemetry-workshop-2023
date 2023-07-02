@@ -39,7 +39,7 @@ Using the `git diff` command, you can compare a **bare** app with one of its ins
 Example:
 
 ```sh
-git diff --no-index python-flask/1-bare python-flask/2-traces
+git diff --no-index python-flask/bare python-flask/traces
 ```
 
 To run one of the apps, navigate to `lab-1` and run the command below after changing the value of `path_to_app_directory`:
@@ -51,7 +51,7 @@ APP=path_to_app_directory docker-compose up --build
 Example:
 
 ```sh
-APP=python-flask/5-complete docker-compose up --build
+APP=python-flask/complete docker-compose up --build
 ```
 
 This command builds and runs the app on port `4321`. You can view the running app in your web browser at [http://localhost:4321/](http://localhost:4321/) and then view the activity in your terminal.
@@ -66,9 +66,9 @@ You can control the app using these endpoints:
 
 Before instrumenting the app, let's see how it behaves on its own. This will help us understand the effect of each instrumentation in the next sections of the lab.
 
-**Step 1.** Review the app code in a text editor: [`python-flask/1-bare/app.py`](python-flask/1-bare/app.py)
+**Step 1.** Review the app code in a text editor: [`python-flask/bare/app.py`](python-flask/bare/app.py)
 
-**Step 2.** Run the app: `APP=python-flask/1-bare docker-compose up --build`
+**Step 2.** Run the app: `APP=python-flask/bare docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/) - Notice that the app responds with `ok` for any message.
 
@@ -80,13 +80,13 @@ Before instrumenting the app, let's see how it behaves on its own. This will hel
 <a name="lab-1.2-traces-instrumentation"></a>
 ## Lab 1.2 - Traces instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index python-flask/1-bare python-flask/2-traces`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index python-flask/bare python-flask/traces`
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/2-traces/requirements.txt) file.
-* How did the code change in [`app.py`](python-flask/2-traces/app.py)?
-* How did the environment variables change in [`Dockerfile`](python-flask/2-traces/Dockerfile)?
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/traces/requirements.txt) file.
+* How did the code change in [`app.py`](python-flask/traces/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/traces/Dockerfile)?
 
 Things to know:
 
@@ -98,7 +98,7 @@ Best practices:
 
 * `ConsoleSpanExporter` is a great tool when implementing instrumentations in development, because it rules out any variables downstream of the app (e.g. networking issues or database issues) when troubleshooting your implementation. In production, you can omit `ConsoleSpanExporter` to prevent noisy logs.
 
-**Step 2.** Run the app: `APP=python-flask/2-traces docker-compose up --build`
+**Step 2.** Run the app: `APP=python-flask/traces docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
@@ -157,13 +157,13 @@ Best practices:
 <a name="lab-1.3-metrics-instrumentation"></a>
 ## Lab 1.3 - Metrics instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with metrics instrumentation: `git diff --no-index python-flask/1-bare python-flask/3-metrics`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with metrics instrumentation: `git diff --no-index python-flask/bare python-flask/metrics`
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/3-metrics/requirements.txt) file.
-* How did the code change in [`app.py`](python-flask/3-metrics/app.py)?
-* How did the environment variables change in [`Dockerfile`](python-flask/3-metrics/app.py)?
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/metrics/requirements.txt) file.
+* How did the code change in [`app.py`](python-flask/metrics/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/metrics/app.py)?
 * How do these changes compare with the traces instrumentation?
 
 Things to know:
@@ -171,7 +171,7 @@ Things to know:
 * The app uses a `PeriodicExportingMetricReader` for each exporter. Notice the configurable export interval that is set to `5000ms`.
 * The app uses a `ConsoleMetricExporter` that serves the same purpose as the `ConsoleSpanExporter` from the traces instrumentation.
 
-**Step 2.** Run the app: `APP=python-flask/3-metrics docker-compose up --build`
+**Step 2.** Run the app: `APP=python-flask/metrics docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
@@ -415,13 +415,13 @@ Things to know:
 <a name="lab-1.4-logs-instrumentation"></a>
 ## Lab 1.4 - Logs instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/1-bare python-flask/4-logs`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/bare python-flask/logs`
 
 Questions to explore:
 
-* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/4-logs/requirements.txt) file.
-* How did the code change in [`app.py`](python-flask/4-logs/app.py)?
-* How did the environment variables change in [`Dockerfile`](python-flask/4-logs/Dockerfile)?
+* What dependencies were added? Note: Python dependencies are declared in the [`requirements.txt`](python-flask/logs/requirements.txt) file.
+* How did the code change in [`app.py`](python-flask/logs/app.py)?
+* How did the environment variables change in [`Dockerfile`](python-flask/logs/Dockerfile)?
 * How do these changes compare with the traces and metrics instrumentations?
 
 Things to know:
@@ -429,7 +429,7 @@ Things to know:
 * The app uses a `BatchLogRecordProcessor` for each exporter.
 * The app uses a `ConsoleLogExporter` that serves the same purpose as the `ConsoleSpanExporter` from the traces instrumentation.
 
-**Step 2.** Run the app: `APP=python-flask/4-logs docker-compose up --build`
+**Step 2.** Run the app: `APP=python-flask/logs docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
@@ -496,9 +496,9 @@ Things to know:
 <a name="lab-1.5-complete-instrumentation"></a>
 ## Lab 1.5 - Complete instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/1-bare python-flask/5-complete`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/bare python-flask/complete`
 
-**Step 2.** Run the app: `APP=python-flask/5-complete docker-compose up --build`
+**Step 2.** Run the app: `APP=python-flask/complete docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
@@ -521,11 +521,11 @@ Some languages can be instrumented with without modifying the application code. 
 
 **Step 1.** Review the app code in a text editor:
 
-* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/App.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/App.java)
-* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java)
-* [`java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java`](java-springboot/1-bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java)
+* [`java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/App.java`](java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/App.java)
+* [`java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java`](java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/AppController.java)
+* [`java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java`](java-springboot/bare/src/main/java/com/grafana/otelworkshop/springboot/AppErrorController.java)
 
-**Step 2.** Run the app: `APP=java-springboot/1-bare docker-compose up --build`
+**Step 2.** Run the app: `APP=java-springboot/bare docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/) - Notice that the app responds with `ok` for any message.
 
@@ -536,9 +536,9 @@ Some languages can be instrumented with without modifying the application code. 
 
 ### Compare the Java app with automatic instrumentation
 
-**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index java-springboot/1-bare java-springboot/2-complete-auto`
+**Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index java-springboot/bare java-springboot/complete-auto`
 
-**Step 2.** Run the app: `APP=java-springboot/1-bare docker-compose up --build`
+**Step 2.** Run the app: `APP=java-springboot/bare docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
@@ -570,7 +570,7 @@ Some languages can be instrumented with without modifying the application code. 
 Questions to explore:
 
 * What files changed?
-* How did [`Dockerfile`](java-springboot/2-complete-auto/Dockerfile) change?
+* How did [`Dockerfile`](java-springboot/complete-auto/Dockerfile) change?
 * How does the telemetry data in Java compare to Python?
 
 
