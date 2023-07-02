@@ -15,10 +15,13 @@ logging.getLogger().addHandler(handler)
 import flask
 app = flask.Flask(__name__)
 
+# Flask auto-instrumentation
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+FlaskInstrumentor().instrument_app(app)
+
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
-    logging.warning('custom-log-message')
     return 'ok'
 
 # Handle requests to http://localhost:4321/error

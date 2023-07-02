@@ -9,16 +9,18 @@ set_meter_provider(meter_provider)
 
 # Create a custom counter metric
 meter = get_meter_provider().get_meter('custom_meter')
-counter = meter.create_counter('custom_counter')
 
 # Configure app
 import flask
 app = flask.Flask(__name__)
 
+# Flask auto-instrumentation
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+FlaskInstrumentor().instrument_app(app)
+
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
-    counter.add(1) # Invoke custom metric counter
     return 'ok'
 
 # Handle requests to http://localhost:4321/error

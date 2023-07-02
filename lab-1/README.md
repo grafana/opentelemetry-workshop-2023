@@ -105,7 +105,7 @@ Best practices:
 **Step 4.** View the app logs in your terminal. Notice that the traces appear in the terminal.
 
 <details>
-<summary>View sample trace logs</summary>
+<summary>View sample trace</summary>
 
 ```json
 {
@@ -170,7 +170,6 @@ Things to know:
 
 * The app uses a `PeriodicExportingMetricReader` for each exporter. Notice the configurable export interval that is set to `5000ms`.
 * The app uses a `ConsoleMetricExporter` that serves the same purpose as the `ConsoleSpanExporter` from the traces instrumentation.
-* The app uses a custom `meter` to track and increment the number of requests to the `/` handler.
 
 **Step 2.** Run the app: `APP=python-flask/3-metrics docker-compose up --build`
 
@@ -179,7 +178,7 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice that the metrics appear in the terminal every 5 seconds, as instructed by the `5000ms` export interval.
 
 <details>
-<summary>View sample metric logs</summary>
+<summary>View sample metrics</summary>
 
 ```json
 {
@@ -197,26 +196,206 @@ Things to know:
       "scope_metrics": [
         {
           "scope": {
-            "name": "custom_meter",
-            "version": null,
+            "name": "opentelemetry.instrumentation.flask",
+            "version": "0.39b0",
             "schema_url": ""
           },
           "metrics": [
             {
-              "name": "custom_counter",
-              "description": "",
-              "unit": "",
+              "name": "http.server.active_requests",
+              "description": "measures the number of concurrent HTTP requests that are currently in-flight",
+              "unit": "requests",
               "data": {
                 "data_points": [
                   {
-                    "attributes": {},
-                    "start_time_unix_nano": 1687810850828465882,
-                    "time_unix_nano": 1687810859329120844,
-                    "value": 1
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0"
+                    },
+                    "start_time_unix_nano": 1688317271473734053,
+                    "time_unix_nano": 1688317275250598013,
+                    "value": 0
                   }
                 ],
                 "aggregation_temporality": 2,
-                "is_monotonic": true
+                "is_monotonic": false
+              }
+            },
+            {
+              "name": "http.server.duration",
+              "description": "measures the duration of the inbound HTTP request",
+              "unit": "ms",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0",
+                      "net.host.port": 4321,
+                      "http.status_code": 500
+                    },
+                    "start_time_unix_nano": 1688317271477757928,
+                    "time_unix_nano": 1688317275250598013,
+                    "count": 3,
+                    "sum": 10,
+                    "bucket_counts": [
+                      0,
+                      3,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "explicit_bounds": [
+                      0.0,
+                      5.0,
+                      10.0,
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      250.0,
+                      500.0,
+                      750.0,
+                      1000.0,
+                      2500.0,
+                      5000.0,
+                      7500.0,
+                      10000.0
+                    ],
+                    "min": 2,
+                    "max": 4
+                  },
+                  {
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0",
+                      "net.host.port": 4321,
+                      "http.status_code": 200
+                    },
+                    "start_time_unix_nano": 1688317271477757928,
+                    "time_unix_nano": 1688317275250598013,
+                    "count": 4,
+                    "sum": 7,
+                    "bucket_counts": [
+                      0,
+                      4,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "explicit_bounds": [
+                      0.0,
+                      5.0,
+                      10.0,
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      250.0,
+                      500.0,
+                      750.0,
+                      1000.0,
+                      2500.0,
+                      5000.0,
+                      7500.0,
+                      10000.0
+                    ],
+                    "min": 1,
+                    "max": 3
+                  }
+                ],
+                "aggregation_temporality": 2
+              }
+            }
+          ],
+          "schema_url": ""
+        }
+      ],
+      "schema_url": ""
+    }
+  ]
+}
+{
+  "resource_metrics": [
+    {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.18.0",
+          "service.name": "python-flask"
+        },
+        "schema_url": ""
+      },
+      "scope_metrics": [
+        {
+          "scope": {
+            "name": "opentelemetry.instrumentation.flask",
+            "version": "0.39b0",
+            "schema_url": ""
+          },
+          "metrics": [
+            {
+              "name": "http.server.active_requests",
+              "description": "measures the number of concurrent HTTP requests that are currently in-flight",
+              "unit": "requests",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0"
+                    },
+                    "start_time_unix_nano": 1688317271473734053,
+                    "time_unix_nano": 1688317280243504501,
+                    "value": 0
+                  }
+                ],
+                "aggregation_temporality": 2,
+                "is_monotonic": false
+              }
+            },
+            {
+              "name": "http.server.duration",
+              "description": "measures the duration of the inbound HTTP request",
+              "unit": "ms",
+              "data": {
+                "data_points": [],
+                "aggregation_temporality": 2
               }
             }
           ],
@@ -291,6 +470,21 @@ Things to know:
   "trace_id": "0x00000000000000000000000000000000",
   "span_id": "0x0000000000000000",
   "trace_flags": 0,
+  "resource": "BoundedAttributes({'telemetry.sdk.language': 'python', 'telemetry.sdk.name': 'opentelemetry', 'telemetry.sdk.version': '1.18.0', 'service.name': 'python-flask'}, maxlen=None)"
+}
+{
+  "body": "Exception on /error [GET]",
+  "severity_number": "<SeverityNumber.ERROR: 17>",
+  "severity_text": "ERROR",
+  "attributes": {
+    "exception.type": "ZeroDivisionError",
+    "exception.message": "division by zero",
+    "exception.stacktrace": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 2190, in wsgi_app\n    response = self.full_dispatch_request()\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1486, in full_dispatch_request\n    rv = self.handle_user_exception(e)\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1484, in full_dispatch_request\n    rv = self.dispatch_request()\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1469, in dispatch_request\n    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)\n  File \"//app.py\", line 50, in error\n    return eval('0/0')\n  File \"<string>\", line 1, in <module>\nZeroDivisionError: division by zero\n"
+  },
+  "timestamp": "2023-07-02T16:59:07.160477Z",
+  "trace_id": "0x00000000000000000000000000000000",
+  "span_id": "0x0000000000000000",
+  "trace_flags": 1,
   "resource": "BoundedAttributes({'telemetry.sdk.language': 'python', 'telemetry.sdk.name': 'opentelemetry', 'telemetry.sdk.version': '1.18.0', 'service.name': 'python-flask'}, maxlen=None)"
 }
 ```
