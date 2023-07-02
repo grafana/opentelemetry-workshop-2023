@@ -36,9 +36,6 @@ app = flask.Flask(__name__)
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 FlaskInstrumentor().instrument_app(app)
 
-from opentelemetry import trace
-tracer = trace.get_tracer(__name__)
-
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
