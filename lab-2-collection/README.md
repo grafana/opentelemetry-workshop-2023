@@ -3,10 +3,10 @@
 ## Contents
 
 * [Preface](#preface)
-* [Lab 2.1 - OpenTelemetry Collector](#lab-2.1-opentelemetry-collector)
-* [Lab 2.2 - OpenTelemetry Collector to Grafana Stack](#lab-2.2-grafana-agent-to-grafana-stack)
-* [Lab 2.3 - Grafana Agent to Grafana Stack](#lab-2.3-grafana-agent-to-grafana-stack)
-* [Lab 2.4 - Grafana Agent to OTLP Gateway](#lab-2.4-grafana-agent-to-otlp-gateway)
+* [2.1 - OpenTelemetry Collector](#2.1-opentelemetry-collector)
+* [2.2 - OpenTelemetry Collector to Grafana Stack](#2.2-grafana-agent-to-grafana-stack)
+* [2.3 - Grafana Agent to Grafana Stack](#2.3-grafana-agent-to-grafana-stack)
+* [2.4 - Grafana Agent to OTLP Gateway](#2.4-grafana-agent-to-otlp-gateway)
 
 
 <a name="preface"></a>
@@ -15,8 +15,8 @@
 Lab 2 introduces the fundamentals of collecting and transporting data with OpenTelemetry. You will see how to collect and ship data to an external destination.
 
 
-<a name="lab-2.1-opentelemetry-collector"></a>
-## Lab 2.1 - OpenTelemetry Collector
+<a name="2.1-opentelemetry-collector"></a>
+## 2.1 - OpenTelemetry Collector
 
 First let's see how to collect traces, metrics, and logs with the OpenTelemetry Collector. We won't ship the data to an external destination yet. Instead the data will appear in the terminal under the container logs for the OpenTelemetry Collector.
 
@@ -40,8 +40,8 @@ Questions to explore:
 **Step 6.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-2.2-opentelemetry-collector-to-grafana-stack"></a>
-## Lab 2.2 - OpenTelemetry Collector to Grafana Stack
+<a name="2.2-opentelemetry-collector-to-grafana-stack"></a>
+## 2.2 - OpenTelemetry Collector to Grafana Stack
 
 Now let's see how the OpenTelemetry Collector ships data to an external destination. This example ships data to the Grafana Stack that includes [Tempo](https://grafana.com/oss/tempo) for traces, [Mimir](https://grafana.com/oss/mimir) for metrics, and [Loki](https://grafana.com/oss/loki) for logs.
 
@@ -68,8 +68,8 @@ Questions to explore:
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-2.3-grafana-agent-to-grafana-stack"></a>
-## Lab 2.3 - Grafana Agent to Grafana Stack
+<a name="2.3-grafana-agent-to-grafana-stack"></a>
+## 2.3 - Grafana Agent to Grafana Stack
 
 Now let's compare the OpenTelemetry Collector to the [Grafana Agent](https://grafana.com/docs/agent/latest/).
 
@@ -101,8 +101,8 @@ Questions to explore:
 **Step 6.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-2.4-grafana-agent-to-otlp-gateway"></a>
-## Lab 2.4 - Grafana Agent to OTLP Gateway
+<a name="2.4-grafana-agent-to-otlp-gateway"></a>
+## 2.4 - Grafana Agent to OTLP Gateway
 
 The [Grafana Cloud OTLP Gateway](https://grafana.com/docs/grafana-cloud/data-configuration/otlp/send-data-otlp/) simplifies the configuration by requiring only one endpoint for traces, metrics, and logs. Let's see how this compares to shipping data to Tempo, Mimir, and Loki separately.
 

@@ -3,13 +3,15 @@
 ## Contents
 
 * [Preface](#preface)
-* [Lab 1.1 - No instrumentation](#lab-1.1-no-instrumentation)
-* [Lab 1.2 - Traces instrumentation](#lab-1.2-traces-instrumentation)
-* [Lab 1.3 - Metrics instrumentation](#lab-1.3-metrics-instrumentation)
-* [Lab 1.4 - Logs instrumentation](#lab-1.4-logs-instrumentation)
-* [Lab 1.5 - Complete instrumentation](#lab-1.5-complete-instrumentation)
-* [Lab 1.6 - Automatic instrumentation for Java](#lab-1.6-automatic-instrumentation-for-java)
-* [Lab 1.7 - Resource attributes](#lab-1.7-resource-attributes)
+* [1.1 - No instrumentation](#1.1-no-instrumentation)
+* [1.2 - Traces instrumentation](#1.2-traces-instrumentation)
+  * [1.2.1 - Custom spans](#1.2.1-custom-spans)
+* [1.3 - Metrics instrumentation](#1.3-metrics-instrumentation)
+  * [1.3.1 - Custom metrics](#1.3.1-custom-metrics)
+* [1.4 - Logs instrumentation](#1.4-logs-instrumentation)
+* [1.5 - Complete instrumentation](#1.5-complete-instrumentation)
+* [1.6 - Automatic instrumentation for Java](#1.6-automatic-instrumentation-for-java)
+* [1.7 - Resource attributes](#1.7-resource-attributes)
 * [Retrospective](#retrospective)
 
 
@@ -62,8 +64,8 @@ You can control the app using these endpoints:
 * [http://localhost:4321/](http://localhost:4321/) - Responds with `ok`
 * [http://localhost:4321/error](http://localhost:4321/error) - Responds with an error message after attempting to divide by zero
 
-<a name="lab-1.1-no-instrumentation"></a>
-## Lab 1.1 - No instrumentation
+<a name="1.1-no-instrumentation"></a>
+## 1.1 - No instrumentation
 
 Before instrumenting the app, let's see how it behaves on its own. This will help us understand the effect of each instrumentation in the next sections of the lab.
 
@@ -78,8 +80,21 @@ Before instrumenting the app, let's see how it behaves on its own. This will hel
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-1.2-traces-instrumentation"></a>
-## Lab 1.2 - Traces instrumentation
+<a name="1.2-traces-instrumentation"></a>
+## 1.2 - Traces instrumentation
+
+Traces provide visibility into the execution of one or more applications or services. A **trace** is a set of one or more **spans** that represent individual units of work (the spans) within a broader, single transaction of work (the trace).
+
+Traces include the following data:
+
+* [**Context**](https://opentelemetry.io/docs/concepts/signals/traces/#span-context) - Metadata about the trace in which the span participates, such as `TraceID` and `SpanId`.
+* [**Attributes**](https://opentelemetry.io/docs/concepts/signals/traces/#attributes) - Metadata about the current span. Attributes are arbitrary key-value pairs that should conform to [semantic conventions](https://opentelemetry.io/docs/specs/otel/trace/semantic_conventions/). Instrumentation libraries automatically add some attributes to each span.
+* [**Events**](https://opentelemetry.io/docs/concepts/signals/traces/#span-events) - Indicates a notable event in the trace, serving the purpose of a log or annotation.
+* [**Links**](https://opentelemetry.io/docs/concepts/signals/traces/#span-links) - Establishes links between spans. These are useful for linking traces with asynchronous spans, such as when using message queues. Links are not necessary for most traces which are synchronous.
+* [**Status**](https://opentelemetry.io/docs/concepts/signals/traces/#span-status) - Indicates the success or failure of a span, if applicable. Values can be `Ok`, `Error`, or `Unset`. Instrumentation libraries automatically set the value to `Error` when handling exceptions, but they do not automatically set the value based on the HTTP status code. The default value is `Unset`.
+* [**Kind**](https://opentelemetry.io/docs/concepts/signals/traces/#span-kind) - Indicates the source of a span. Values can be `Client`, `Server`, `Internal`, `Producer`, or `Consumer`. Instrumentation libraries automatically set the value to `Server` for a parent span, and `Internal` for child spans.
+
+Let's see an example in action.
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index python-flask/bare python-flask/traces`
 
@@ -106,7 +121,7 @@ Best practices:
 **Step 4.** View the app logs in your terminal. Notice that the traces appear in the terminal.
 
 <details>
-<summary>View sample trace</summary>
+<summary><font color='#2f81f7'><b>Click to view a sample trace</b></font></summary>
 
 ```json
 {
@@ -155,8 +170,147 @@ Best practices:
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-1.3-metrics-instrumentation"></a>
-## Lab 1.3 - Metrics instrumentation
+<a name="1.2.1-custom-spans"></a>
+### 1.2.1 - Custom spans
+
+You can add or modify spans in a trace. Let's see some examples in action.
+
+**Step 1.** Compare the code of the app with default traces instrumentation to the code of the app with the additional custom instrumentation: `git diff --no-index python-flask/traces python-flask/traces-custom`
+
+**Step 2.** Run the app: `APP=python-flask/traces-custom docker-compose up --build`
+
+**Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
+
+**Step 4.** View the app logs in your terminal.
+
+<details>
+<summary><font color='#2f81f7'><b>Click to view a sample trace</b></font></summary>
+
+```json
+{
+  "name": "child_span_2",
+  "context": {
+    "trace_id": "0xc63d5fae79c8a6b6bd93f6fd0ec65658",
+    "span_id": "0xe1bbe20caae47656",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.INTERNAL",
+  "parent_id": "0x698722f5acdaece7",
+  "start_time": "2023-07-03T16:45:29.657311Z",
+  "end_time": "2023-07-03T16:45:29.657325Z",
+  "status": {
+    "status_code": "UNSET"
+  },
+  "attributes": {
+    "greeting": "hello!"
+  },
+  "events": [],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+{
+  "name": "child_span_1",
+  "context": {
+    "trace_id": "0xc63d5fae79c8a6b6bd93f6fd0ec65658",
+    "span_id": "0x698722f5acdaece7",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.INTERNAL",
+  "parent_id": "0xa1a780b9ece706c7",
+  "start_time": "2023-07-03T16:45:29.657285Z",
+  "end_time": "2023-07-03T16:45:29.657344Z",
+  "status": {
+    "status_code": "UNSET"
+  },
+  "attributes": {},
+  "events": [],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+{
+  "name": "/",
+  "context": {
+    "trace_id": "0xc63d5fae79c8a6b6bd93f6fd0ec65658",
+    "span_id": "0xa1a780b9ece706c7",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.SERVER",
+  "parent_id": null,
+  "start_time": "2023-07-03T16:45:29.653985Z",
+  "end_time": "2023-07-03T16:45:29.657530Z",
+  "status": {
+    "status_code": "OK"
+  },
+  "attributes": {
+    "http.method": "GET",
+    "http.server_name": "0.0.0.0",
+    "http.scheme": "http",
+    "net.host.port": 4321,
+    "http.host": "localhost:4321",
+    "http.target": "/",
+    "net.peer.ip": "172.25.0.1",
+    "http.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "net.peer.port": 59842,
+    "http.flavor": "1.1",
+    "http.route": "/",
+    "http.status_code": 200
+  },
+  "events": [
+    {
+      "name": "we made a friend",
+      "timestamp": "2023-07-03T16:45:29.657357Z",
+      "attributes": {
+        "mood": "happy"
+      }
+    }
+  ],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+```
+</details>
+
+Each trace now has three spans instead of one. We modified the instrumentation to include two custom child spans for each trace. The logs display the spans in reverse order, so the parent span will be the last span in your terminal output.
+
+Here's what we modified and how that appears in the trace data:
+
+* **Attributes** - We added a custom attribute named `greeting` with a value of `hello!` to one of our child spans.
+* **Events** - We added a custom event to the parent span. We named the event `we made a friend` and gave it a custom attribute named `mood` with a value of `happy`.
+* **Status** - We set the value of parent span status (`status_code`) to `OK` to indicate success.
+
+It's also worth noting:
+
+* **Context** - The trace context for each span includes the same TraceId (`trace_id`). This was handled by the instrumentation library.
+
+**Step 5.** Stop the app using Ctrl+C or ⌘-C.
+
+
+<a name="1.3-metrics-instrumentation"></a>
+## 1.3 - Metrics instrumentation
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with metrics instrumentation: `git diff --no-index python-flask/bare python-flask/metrics`
 
@@ -179,7 +333,7 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice that the metrics appear in the terminal every 5 seconds, as instructed by the `5000ms` export interval.
 
 <details>
-<summary>View sample metrics</summary>
+<summary><font color='#2f81f7'><b>Click to view sample metrics</b></font></summary>
 
 ```json
 {
@@ -413,8 +567,235 @@ Things to know:
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-1.4-logs-instrumentation"></a>
-## Lab 1.4 - Logs instrumentation
+<a name="1.3.1-custom-metrics"></a>
+### 1.3.1 - Custom metrics
+
+You can instrument custom metrics (or "meters") and add custom attributes to those metrics. Let's see some examples in action.
+
+**Step 1.** Compare the code of the app with default metrics instrumentation to the code of the app with the additional custom instrumentation: `git diff --no-index python-flask/metrics python-flask/metrics-custom`
+
+**Step 2.** Run the app: `APP=python-flask/metrics-custom docker-compose up --build`
+
+**Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
+
+**Step 4.** View the app logs in your terminal.
+
+<details>
+<summary><font color='#2f81f7'><b>Click to view sample metrics</b></font></summary>
+
+```json
+{
+  "resource_metrics": [
+    {
+      "resource": {
+        "attributes": {
+          "telemetry.sdk.language": "python",
+          "telemetry.sdk.name": "opentelemetry",
+          "telemetry.sdk.version": "1.18.0",
+          "service.name": "python-flask"
+        },
+        "schema_url": ""
+      },
+      "scope_metrics": [
+        {
+          "scope": {
+            "name": "opentelemetry.instrumentation.flask",
+            "version": "0.39b0",
+            "schema_url": ""
+          },
+          "metrics": [
+            {
+              "name": "http.server.active_requests",
+              "description": "measures the number of concurrent HTTP requests that are currently in-flight",
+              "unit": "requests",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0"
+                    },
+                    "start_time_unix_nano": 1688409038744220923,
+                    "time_unix_nano": 1688409042977454050,
+                    "value": 0
+                  }
+                ],
+                "aggregation_temporality": 2,
+                "is_monotonic": false
+              }
+            },
+            {
+              "name": "http.server.duration",
+              "description": "measures the duration of the inbound HTTP request",
+              "unit": "ms",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "http.method": "GET",
+                      "http.host": "localhost:4321",
+                      "http.scheme": "http",
+                      "http.flavor": "1.1",
+                      "http.server_name": "0.0.0.0",
+                      "net.host.port": 4321,
+                      "http.status_code": 200
+                    },
+                    "start_time_unix_nano": 1688409038745744548,
+                    "time_unix_nano": 1688409042977454050,
+                    "count": 6,
+                    "sum": 10,
+                    "bucket_counts": [
+                      0,
+                      6,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "explicit_bounds": [
+                      0.0,
+                      5.0,
+                      10.0,
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      250.0,
+                      500.0,
+                      750.0,
+                      1000.0,
+                      2500.0,
+                      5000.0,
+                      7500.0,
+                      10000.0
+                    ],
+                    "min": 1,
+                    "max": 2
+                  }
+                ],
+                "aggregation_temporality": 2
+              }
+            }
+          ],
+          "schema_url": ""
+        },
+        {
+          "scope": {
+            "name": "custom_meter",
+            "version": null,
+            "schema_url": ""
+          },
+          "metrics": [
+            {
+              "name": "custom_counter",
+              "description": "",
+              "unit": "",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "foo": "bar"
+                    },
+                    "start_time_unix_nano": 1688409038745295798,
+                    "time_unix_nano": 1688409042977454050,
+                    "value": 6
+                  }
+                ],
+                "aggregation_temporality": 2,
+                "is_monotonic": true
+              }
+            },
+            {
+              "name": "custom_histogram",
+              "description": "",
+              "unit": "",
+              "data": {
+                "data_points": [
+                  {
+                    "attributes": {
+                      "foo": "baz"
+                    },
+                    "start_time_unix_nano": 1688409038745339965,
+                    "time_unix_nano": 1688409042977454050,
+                    "count": 6,
+                    "sum": 26972,
+                    "bucket_counts": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1,
+                      1,
+                      2,
+                      1,
+                      0
+                    ],
+                    "explicit_bounds": [
+                      0.0,
+                      5.0,
+                      10.0,
+                      25.0,
+                      50.0,
+                      75.0,
+                      100.0,
+                      250.0,
+                      500.0,
+                      750.0,
+                      1000.0,
+                      2500.0,
+                      5000.0,
+                      7500.0,
+                      10000.0
+                    ],
+                    "min": 334,
+                    "max": 8166
+                  }
+                ],
+                "aggregation_temporality": 2
+              }
+            }
+          ],
+          "schema_url": ""
+        }
+      ],
+      "schema_url": ""
+    }
+  ]
+}
+```
+</details>
+
+Notice the following:
+
+* We created a `custom_counter` meter and incremented it by 1 for each page load.
+* We created a `custom_histogram` meter and recorded a random number for each page load.
+* We set a custom attribute named `foo` with a value of either `bar` or `baz` each time we invoked one of the meters.
+
+**Step 5.** Stop the app using Ctrl+C or ⌘-C.
+
+
+<a name="1.4-logs-instrumentation"></a>
+## 1.4 - Logs instrumentation
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/bare python-flask/logs`
 
@@ -437,7 +818,7 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice where the original log messages are stored, and the default metadata that is included in the logs.
 
 <details>
-<summary>View sample logs</summary>
+<summary><font color='#2f81f7'><b>Click to view sample logs</b></font></summary>
 
 ```json
 {
@@ -494,8 +875,8 @@ Things to know:
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-1.5-complete-instrumentation"></a>
-## Lab 1.5 - Complete instrumentation
+<a name="1.5-complete-instrumentation"></a>
+## 1.5 - Complete instrumentation
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with logs instrumentation: `git diff --no-index python-flask/bare python-flask/complete`
 
@@ -512,8 +893,8 @@ Things to know:
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
 
-<a name="lab-1.6-automatic-instrumentation-for-java"></a>
-## Lab 1.6 - Automatic instrumentation for Java
+<a name="1.6-automatic-instrumentation-for-java"></a>
+## 1.6 - Automatic instrumentation for Java
 
 Some languages can be instrumented with without modifying the application code. Java is one of those languages.
 
@@ -546,7 +927,7 @@ Some languages can be instrumented with without modifying the application code. 
 **Step 4.** View the app logs in your terminal.
 
 <details>
-<summary>View sample trace logs</summary>
+<summary><font color='#2f81f7'><b>Click to view a sample trace</b></font></summary>
 
 ```sh
 [otel.javaagent 2023-06-27 13:17:37:463 +0000] [http-nio-4321-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'AppController.index' : d3572661fa424301e427d9135ba938bc e9eb751209030116 INTERNAL [tracer: io.opentelemetry.spring-webmvc-3.1:1.27.0-alpha] AttributesMap{data={thread.id=22, thread.name=http-nio-4321-exec-1}, capacity=128, totalAddedValues=2}
@@ -555,7 +936,7 @@ Some languages can be instrumented with without modifying the application code. 
 </details>
 
 <details>
-<summary>View sample metric logs</summary>
+<summary><font color='#2f81f7'><b>Click to view sample metrics</b></font></summary>
 
 ```sh
 [otel.javaagent 2023-06-27 13:18:15:214 +0000] [PeriodicMetricReader-1] INFO io.opentelemetry.exporter.logging.LoggingMetricExporter - Received a collection of 19 metrics for export.
@@ -575,10 +956,10 @@ Questions to explore:
 * How does the telemetry data in Java compare to Python?
 
 
-<a name="lab-1.7-resource-attributes"></a>
-## Lab 1.7 - Resource attributes
+<a name="1.7-resource-attributes"></a>
+## 1.7 - Resource attributes
 
-[Resource attributes](https://opentelemetry.io/docs/instrumentation/js/resources/) describe the instrumented entity. Instrumentation libraries will automatically detect certain resource attributes and include them in the telemetry payloads. Here is an example of the resource attributes that were automatically created by the instrumentation libraries in [Lab 1.5](#lab-1.5-complete-instrumentation):
+[Resource attributes](https://opentelemetry.io/docs/instrumentation/js/resources/) describe the instrumented entity. Instrumentation libraries will automatically detect certain resource attributes and include them in the telemetry payloads. Here is an example of the resource attributes that were automatically created by the instrumentation libraries in [Section 1.5](#1.5-complete-instrumentation):
 
 ```json
 {

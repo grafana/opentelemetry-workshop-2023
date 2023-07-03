@@ -7,6 +7,16 @@ meter_provider = MeterProvider(metric_readers=[
 ])
 set_meter_provider(meter_provider)
 
+# Create two custom metrics: counter and histogram
+meter = get_meter_provider().get_meter('custom_meter')
+counter = meter.create_counter('custom_counter')
+histogram = meter.create_histogram('custom_histogram')
+
+# Create a function to generate a random number from 0 to 10,000
+from random import randint
+def random_number():
+    return randint(0, 10000)
+
 # Configure app
 import flask
 app = flask.Flask(__name__)
@@ -18,6 +28,8 @@ FlaskInstrumentor().instrument_app(app)
 # Handle requests to http://localhost:4321/
 @app.route('/')
 def home():
+    counter.add(1, attributes={ 'foo': 'bar' })
+    histogram.record(random_number(), attributes={ 'foo': 'baz' })
     return 'ok'
 
 # Handle requests to http://localhost:4321/error

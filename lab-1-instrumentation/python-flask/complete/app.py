@@ -26,7 +26,8 @@ set_logger_provider(logger_provider)
 # Logging instrumentation
 import logging
 handler = LoggingHandler(logger_provider=logger_provider)
-logging.getLogger().addHandler(handler)
+logger = logging.getLogger()
+logger.addHandler(handler)
 
 # Configure app
 import flask
