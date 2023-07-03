@@ -6,6 +6,7 @@
 * [1.1 - No instrumentation](#1.1-no-instrumentation)
 * [1.2 - Traces instrumentation](#1.2-traces-instrumentation)
   * [1.2.1 - Custom spans](#1.2.1-custom-spans)
+  * [1.2.2 - Distributed traces](#1.2.2-distributed-traces)
 * [1.3 - Metrics instrumentation](#1.3-metrics-instrumentation)
   * [1.3.1 - Custom metrics](#1.3.1-custom-metrics)
 * [1.4 - Logs instrumentation](#1.4-logs-instrumentation)
@@ -305,6 +306,168 @@ Here's what we modified and how that appears in the trace data:
 It's also worth noting:
 
 * **Context** - The trace context for each span includes the same TraceId (`trace_id`). This was handled by the instrumentation library.
+
+**Step 5.** Stop the app using Ctrl+C or ⌘-C.
+
+
+<a name="1.2.2-distributed-traces"></a>
+### 1.2.2 - Distributed traces
+
+A **distributed trace** has spans from two or more instrumented apps. This is achieved with [context propagation](https://opentelemetry.io/docs/concepts/signals/traces/#context-propagation). When an instrumented app talks to another app, it shares (or "propagates") its trace context (e.g. `TraceId`) using an HTTP header called [`traceparent`](https://www.w3.org/TR/trace-context/#traceparent-header). If the second app is also instrumented, it will look for that header, apply the context to its spans, and propagate the context to any apps that it talks with. Instrumentation libraries automatically handle context propagation. Once you instrument your apps, you don't need to do anything else to get them to share their contexts with each other. Easy!
+
+Let's see this in action. We can create a distributed trace from a single app by instructing the app send a request to itself over the network.
+
+**Step 1.** Compare the code of the app with default traces instrumentation to the code of the app with the additional custom instrumentation: `git diff --no-index python-flask/traces python-flask/traces-distributed`
+
+Questions to explore:
+
+* Where does context propogation occur in the code?
+
+**Step 2.** Run the app: `APP=python-flask/traces-distributed docker-compose up --build`
+
+**Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
+
+**Step 4.** View the app logs in your terminal. Whenever you visit the app in your web browser, a distributed trace with three spans is produced. The spans are logged in reverse order in your terminal output, meaning the root span is the last span to appear in the output.
+
+<details>
+<summary><b style='color:#2f81f7'>Click to view a sample trace 🔎</b></summary>
+
+```json
+{
+  "name": "/test",
+  "context": {
+    "trace_id": "0x24a21d29f7b3aba22bc8fdcccc4fd0bd",
+    "span_id": "0x8ff0d623a6ddfca8",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.SERVER",
+  "parent_id": "0xc42e73e0af1e038a",
+  "start_time": "2023-07-03T19:04:40.769832Z",
+  "end_time": "2023-07-03T19:04:40.770421Z",
+  "status": {
+    "status_code": "UNSET"
+  },
+  "attributes": {
+    "http.method": "GET",
+    "http.server_name": "0.0.0.0",
+    "http.scheme": "http",
+    "net.host.port": 4321,
+    "http.host": "localhost:4321",
+    "http.target": "/test",
+    "net.peer.ip": "127.0.0.1",
+    "http.user_agent": "python-requests/2.31.0",
+    "net.peer.port": 53092,
+    "http.flavor": "1.1",
+    "http.route": "/test",
+    "http.status_code": 200
+  },
+  "events": [],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+{
+  "name": "HTTP GET",
+  "context": {
+    "trace_id": "0x24a21d29f7b3aba22bc8fdcccc4fd0bd",
+    "span_id": "0xc42e73e0af1e038a",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.CLIENT",
+  "parent_id": "0x0764d117c3916e7d",
+  "start_time": "2023-07-03T19:04:40.767925Z",
+  "end_time": "2023-07-03T19:04:40.772192Z",
+  "status": {
+    "status_code": "UNSET"
+  },
+  "attributes": {
+    "http.method": "GET",
+    "http.url": "http://localhost:4321/test",
+    "http.status_code": 200
+  },
+  "events": [],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+{
+  "name": "/",
+  "context": {
+    "trace_id": "0x24a21d29f7b3aba22bc8fdcccc4fd0bd",
+    "span_id": "0x0764d117c3916e7d",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.SERVER",
+  "parent_id": null,
+  "start_time": "2023-07-03T19:04:40.746530Z",
+  "end_time": "2023-07-03T19:04:40.772403Z",
+  "status": {
+    "status_code": "UNSET"
+  },
+  "attributes": {
+    "http.method": "GET",
+    "http.server_name": "0.0.0.0",
+    "http.scheme": "http",
+    "net.host.port": 4321,
+    "http.host": "localhost:4321",
+    "http.target": "/",
+    "net.peer.ip": "172.25.0.1",
+    "http.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "net.peer.port": 60346,
+    "http.flavor": "1.1",
+    "http.route": "/",
+    "http.status_code": 200
+  },
+  "events": [],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+```
+</details>
+
+Here's an explanation of the spans in the sample above. Remember that the spans are displayed in reverse order in your terminal output.
+
+*Span 1* - This root span was recorded by the app when it received your request to the `/` endpoint in your web browser.
+
+* `context` shows a `trace_id` of `0x24a21d29f7b3aba22bc8fdcccc4fd0bd` and a `span_id` of `0xc42e73e0af1e038a`.
+* `parent_id` is set to `null` because it is the root span.
+* `kind` is set to `SpanKind.SERVER`, because it represents the span of a request *received* by the app.
+* The `http.user_agent` attribute shows how your web browser described itself to the app.
+  
+*Span 2* - This span was recorded by the app when it *sent* the request for the `/test` endpoint.
+
+* `context` shows a `trace_id` of `0x24a21d29f7b3aba22bc8fdcccc4fd0bd`, which was obtained from the `traceparent` header that the parent app shared in its request.
+* `parent_id` is set to `0xc42e73e0af1e038a`, which was obtained from the `traceparent` header that the parent app shared in its request.
+* `kind` is set to `SpanKind.CLIENT`, because it represents the span of a request *sent* by the app.
+  
+*Span 3* - This span was recorded by the app when it *received* the request for the `/test` endpoint.
+
+* `context` shows a `trace_id` of `0x24a21d29f7b3aba22bc8fdcccc4fd0bd`, which was obtained from the `traceparent` header that the parent app shared in its request.
+* `parent_id` is set to `0xc42e73e0af1e038a`, which was obtained from the `traceparent` header that the parent app shared in its request.
+* `kind` is set to `SpanKind.SERVER`, because it represents the span of a request *received* by the app.
+* The `http.user_agent` attribute is set to `python-requests/2.31.0`, which was the client library that the app used to send a request to the `/test` endpoint.
 
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
