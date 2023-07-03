@@ -1,0 +1,50 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        
+processors:
+  batch:
+  
+  # Ensure the "deployment.environment" resource attribute is set to "workshop"
+  resource/attributes:
+    attributes:
+      - action: upsert
+        key: deployment.environment
+        value: workshop
+  
+  # Exclude logs where "severity" is less than "INFO" (e.g. "DEBUG")
+  filter/debug:
+    logs:
+      include:
+        severity_number:
+          min: "INFO"
+          match_undefined: true
+
+exporters:
+  otlphttp:
+    auth:
+      authenticator: basicauth
+    endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
+    
+extensions:
+  basicauth:
+    client_auth:
+      username: ${env:GRAFANA_CLOUD_INSTANCE_ID}
+      password: ${env:GRAFANA_CLOUD_API_KEY}
+        
+service:
+  extensions: [basicauth]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch,resource/attributes]
+      exporters: [otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch,resource/attributes]
+      exporters: [otlphttp]
+    logs:
+      receivers: [otlp]
+      processors: [batch,resource/attributes,filter/debug]
+      exporters: [otlphttp]

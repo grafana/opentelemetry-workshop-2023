@@ -28,7 +28,7 @@ The lab uses an app implemented in two programming languages and app frameworks:
 * **Python** using the [Flask](https://flask.palletsprojects.com/en/2.3.x/) framework ([`python-flask`](python-flask))
 * **Java** using the [Spring Boot](https://spring.io/projects/spring-boot) framework ([`java-springboot`](java-springboot))
 
-Each app contains five variants:
+There are instrumentation-specific variants of the app:
 
 * **Bare** - No instrumentation
 * **Traces** - Traces instrumentation
@@ -36,7 +36,7 @@ Each app contains five variants:
 * **Logs** - Logs instrumentation
 * **Complete** - All three instrumentations with correlations
 
-The lab will run commands in the terminal. You will need to navigate into the `lab-1-instrumentation` directory and run the commands from there.
+This lab requires you to run commands in the terminal. You will need to navigate into the `lab-1-instrumentation` directory and run the commands from there.
 
 Using the `git diff` command, you can compare a **bare** app with one of its instrumentation variants. This lets you see exactly what steps were needed to instrument traces, metrics, or logs. Nothing more, nothing less.
 
