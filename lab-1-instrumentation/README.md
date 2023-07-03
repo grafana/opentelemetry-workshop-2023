@@ -121,7 +121,7 @@ Best practices:
 **Step 4.** View the app logs in your terminal. Notice that the traces appear in the terminal.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view a sample trace</b></summary>
+<summary><b style='color:#2f81f7'>Click to view a sample trace 🔎</b></summary>
 
 ```json
 {
@@ -184,7 +184,7 @@ You can add or modify spans in a trace. Let's see some examples in action.
 **Step 4.** View the app logs in your terminal.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view a sample trace</b></summary>
+<summary><b style='color:#2f81f7'>Click to view a sample trace 🔎</b></summary>
 
 ```json
 {
@@ -333,7 +333,7 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice that the metrics appear in the terminal every 5 seconds, as instructed by the `5000ms` export interval.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view sample metrics</b></summary>
+<summary><b style='color:#2f81f7'>Click to view sample metrics 🔎</b></summary>
 
 ```json
 {
@@ -581,7 +581,7 @@ You can instrument custom metrics (or "meters") and add custom attributes to tho
 **Step 4.** View the app logs in your terminal.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view sample metrics</b></summary>
+<summary><b style='color:#2f81f7'>Click to view sample metrics 🔎</b></summary>
 
 ```json
 {
@@ -818,7 +818,7 @@ Things to know:
 **Step 4.** View the app logs in your terminal. Notice where the original log messages are stored, and the default metadata that is included in the logs.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view sample logs</b></summary>
+<summary><b style='color:#2f81f7'>Click to view sample logs 🔎</b></summary>
 
 ```json
 {
@@ -927,7 +927,7 @@ Some languages can be instrumented with without modifying the application code. 
 **Step 4.** View the app logs in your terminal.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view a sample trace</b></summary>
+<summary><b style='color:#2f81f7'>Click to view a sample trace 🔎</b></summary>
 
 ```sh
 [otel.javaagent 2023-06-27 13:17:37:463 +0000] [http-nio-4321-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'AppController.index' : d3572661fa424301e427d9135ba938bc e9eb751209030116 INTERNAL [tracer: io.opentelemetry.spring-webmvc-3.1:1.27.0-alpha] AttributesMap{data={thread.id=22, thread.name=http-nio-4321-exec-1}, capacity=128, totalAddedValues=2}
@@ -936,7 +936,7 @@ Some languages can be instrumented with without modifying the application code. 
 </details>
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view sample metrics</b></summary>
+<summary><b style='color:#2f81f7'>Click to view sample metrics 🔎</b></summary>
 
 ```sh
 [otel.javaagent 2023-06-27 13:18:15:214 +0000] [PeriodicMetricReader-1] INFO io.opentelemetry.exporter.logging.LoggingMetricExporter - Received a collection of 19 metrics for export.
@@ -962,7 +962,7 @@ Questions to explore:
 [Resource attributes](https://opentelemetry.io/docs/instrumentation/js/resources/) describe the instrumented entity. Instrumentation libraries will automatically detect certain resource attributes and include them in the telemetry payloads. Below is an example of the resource attributes that were automatically created by the instrumentation libraries in [Section 1.5](#1.5-complete-instrumentation).
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view resource attributes</b></summary>
+<summary><b style='color:#2f81f7'>Click to view resource attributes 🔎</b></summary>
 
 ```json
 {
@@ -996,7 +996,7 @@ OTEL_SERVICE_NAME=myservice
 **Step 4.** View the app logs in your terminal. Look for the resource attributes included in the metrics.
 
 <details>
-<summary><b style='color:#2f81f7'>Click to view resource attributes</b></summary>
+<summary><b style='color:#2f81f7'>Click to view resource attributes 🔎</b></summary>
 
 ```json
 {
