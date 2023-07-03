@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  
+  # Application that exports to the load balancer
+  app:
+    build: ../../lab-1-instrumentation/java-springboot/complete-auto
+    ports:
+      - 4321:4321
+    environment:
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otlp-gateway:4317
+      - OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=http://otel-collector-metrics:4317
+      - OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=http://otlp-gateway:4317
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+      
+  # An OpenTelemetry Collector serving as the load balancer (or "OTLP Gateway")
+  otlp-gateway:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317
+    volumes:
+      - ./otlp-gateway-config.yaml:/etc/otelcol-contrib/config.yaml
+    logging:
+      driver: none
+      
+  # An OpenTeletry Collector that exports traces and logs to Grafana Cloud
+  otel-collector-1:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
+      - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
+    logging:
+      driver: none
+      
+  # Another OpenTeletry Collector that exports traces and logs to Grafana Cloud
+  otel-collector-2:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
+      - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
+    logging:
+      driver: none
+      
+  # A final OpenTeletry Collector that exports metrics to Grafana Cloud
+  otel-collector-metrics:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
+      - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
+    logging:
+      driver: none
+      

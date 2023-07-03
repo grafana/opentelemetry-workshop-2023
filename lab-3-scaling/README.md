@@ -4,6 +4,7 @@
 
 * [Preface](#preface)
 * [3.1 - Transformation](#3.1-transformation)
+* [3.2 - Load balancing](#3.2-load-balancing)
 
 
 <a name="preface"></a>
@@ -46,3 +47,40 @@ Questions to explore:
 * What happened to the resource attributes?
 
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
+
+
+<a name="3.2-load-balancing"></a>
+## 3.2 - Load balancing
+
+Let's explore the fundamentals of [load balancing](https://opentelemetry.io/docs/collector/deployment/gateway/).
+
+> **Note** - This lab section requires the [otel-collector-contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) distribution of the OpenTelemetry Collector.
+
+This lab uses four OpenTelemetry Collectors:
+
+  * One serves as a load balancer or "OTLP Gateway"
+  * Two receive traces and logs from the load balancer and export them to Grafana Cloud
+  * One receives metrics directly from the app and exports them to Grafana Cloud
+
+**Step 1.** Review the OpenTelemetry Collector configurations:
+
+* [`otlp-gateway-config.yaml`](load-balancing/otlp-gateway-config.yaml) - Used by the load balancing OpenTelemetry Collector.
+* [`otel-collector-config.yaml`](load-balancing/otel-collector-config.yaml) - Used by the other collectors.
+
+Things to note:
+
+* The [`loadbalancing`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/loadbalancingexporter/README.md) exporter only supports traces and logs. The app sends metrics directly to an OpenTelemetry Collector that is dedicated to metrics.
+
+**Step 2.** Review [`docker-compose.yaml`](load-balancing/docker-compose.yaml)
+
+**Step 3.** Run the app: `docker-compose --project-directory load-balancing --env-file ../env up --build`
+
+**Step 4.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
+
+**Step 5.** Verify the presence of traces, metrics, and logs in Grafana Cloud. Open Grafana, click Ctrl+C or ⌘-C, type `explore` and then press Enter.
+
+* **Traces** - Select "grafanacloud-`orgname`-traces" as the data source, "Last 15 minutes" as the time range, and click "Run query."
+* **Metrics** - Select "grafanacloud-`orgname`-prom" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
+* **Logs** - Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"} | json`
+
+**Step 6.** Stop the app using Ctrl+C or ⌘-C.

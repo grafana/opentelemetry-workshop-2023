@@ -1,0 +1,30 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        
+processors:
+  batch:
+
+exporters:
+  loadbalancing:
+    protocol:
+      otlp:
+        tls:
+          insecure: true
+    resolver:
+      static:
+        hostnames:
+        - otel-collector-1:4317
+        - otel-collector-2:4317
+        
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loadbalancing]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [loadbalancing]

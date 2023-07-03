@@ -63,7 +63,7 @@ Questions to explore:
 
 * **Traces** - Select "grafanacloud-`orgname`-traces" as the data source, "Last 15 minutes" as the time range, and click "Run query."
 * **Metrics** - Select "grafanacloud-`orgname`-prom" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
-* **Logs** -  Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
+* **Logs** -  Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"} | json`
 
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
 
@@ -96,7 +96,7 @@ Questions to explore:
 
 * **Traces** - Select "grafanacloud-`orgname`-traces" as the data source, "Last 15 minutes" as the time range, and click "Run query."
 * **Metrics** - Select "grafanacloud-`orgname`-prom" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
-* **Logs** -  Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
+* **Logs** -  Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"} | json`
 
 **Step 6.** Stop the app using Ctrl+C or ⌘-C.
 
@@ -125,6 +125,6 @@ Questions to explore:
 
 * **Traces** - Select "grafanacloud-`orgname`-traces" as the data source, "Last 15 minutes" as the time range, and click "Run query."
 * **Metrics** - Select "grafanacloud-`orgname`-prom" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
-* **Logs** -  Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"}`
+* **Logs** - Select "grafanacloud-`orgname`-logs" as the data source, "Last 15 minutes" as the time range, and run this query: `{job="java-springboot"} | json`
 
 **Step 5.** Stop the app using Ctrl+C or ⌘-C.
