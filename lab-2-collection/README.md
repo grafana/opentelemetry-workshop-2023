@@ -43,6 +43,8 @@ Questions to explore:
 <a name="2.2-opentelemetry-collector-to-grafana-stack"></a>
 ## 2.2 - OpenTelemetry Collector to Grafana Stack
 
+> **Note** - This lab section requires the [otel-collector-contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) distribution of the OpenTelemetry Collector.
+
 Now let's see how the OpenTelemetry Collector ships data to an external destination. This example ships data to the Grafana Stack that includes [Tempo](https://grafana.com/oss/tempo) for traces, [Mimir](https://grafana.com/oss/mimir) for metrics, and [Loki](https://grafana.com/oss/loki) for logs.
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index otel-collector otel-collector-grafana-stack`
@@ -70,6 +72,8 @@ Questions to explore:
 
 <a name="2.3-grafana-agent-to-grafana-stack"></a>
 ## 2.3 - Grafana Agent to Grafana Stack
+
+> **Note** - This lab section requires the [otel-collector-contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) distribution of the OpenTelemetry Collector.
 
 Now let's compare the OpenTelemetry Collector to the [Grafana Agent](https://grafana.com/docs/agent/latest/).
 

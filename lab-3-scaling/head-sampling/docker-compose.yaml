@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  app:
+    build: ../../lab-1-instrumentation/java-springboot/complete-auto
+    ports:
+      - 4321:4321
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=otlp
+      - OTEL_LOGS_EXPORTER=otlp
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.80.0
+    ports:
+      - 4317:4317
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment:
+      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
+      - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
+    logging:
+      driver: none
+      

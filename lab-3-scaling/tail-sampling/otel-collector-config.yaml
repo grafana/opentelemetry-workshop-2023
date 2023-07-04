@@ -1,0 +1,50 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        
+processors:
+  batch:
+  tail_sampling:
+    decision_wait: 5s
+    policies:
+      [
+        {
+          name: errors-policy,
+          type: status_code,
+          status_code: {status_codes: [ERROR]}
+        },
+        {
+          name: random-policy,
+          type: probabilistic,
+          probabilistic: {sampling_percentage: 20}
+        },
+      ]
+
+exporters:
+  otlphttp:
+    auth:
+      authenticator: basicauth
+    endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
+    
+extensions:
+  basicauth:
+    client_auth:
+      username: ${env:GRAFANA_CLOUD_INSTANCE_ID}
+      password: ${env:GRAFANA_CLOUD_API_KEY}
+        
+service:
+  extensions: [basicauth]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch,tail_sampling]
+      exporters: [otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp]
