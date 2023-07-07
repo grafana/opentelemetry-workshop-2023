@@ -25,7 +25,7 @@ def home():
     requests.get(f'http://localhost:4321/test')
     return 'ok'
     
-# Handle requests to http://localhost:4321/hello
+# Handle requests to http://localhost:4321/test
 @app.route('/test')
 def test():
     return 'test'

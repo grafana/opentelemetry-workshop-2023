@@ -168,7 +168,70 @@ Best practices:
 ```
 </details>
 
-**Step 5.** Stop the app using Ctrl+C or ⌘-C.
+**Step 5.** Open the `/error` endpoint in a web browser: [http://localhost:4321/error](http://localhost:4321/error)
+
+**Step 6.** This caused an error in the app. View the app logs in your terminal to see how errors appear in traces.
+
+<details>
+<summary><b style='color:#2f81f7'>Click to view a sample trace 🔎</b></summary>
+
+```json
+{
+  "name": "/error",
+  "context": {
+    "trace_id": "0xdcbf6bb7013f56929d82de85ca552aa7",
+    "span_id": "0xc894470b684e6a91",
+    "trace_state": "[]"
+  },
+  "kind": "SpanKind.SERVER",
+  "parent_id": null,
+  "start_time": "2023-07-07T20:21:54.662432Z",
+  "end_time": "2023-07-07T20:21:54.681124Z",
+  "status": {
+    "status_code": "ERROR",
+    "description": "ZeroDivisionError: division by zero"
+  },
+  "attributes": {
+    "http.method": "GET",
+    "http.server_name": "0.0.0.0",
+    "http.scheme": "http",
+    "net.host.port": 4321,
+    "http.host": "localhost:4321",
+    "http.target": "/error",
+    "net.peer.ip": "172.25.0.1",
+    "http.user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+    "net.peer.port": 64470,
+    "http.flavor": "1.1",
+    "http.route": "/error",
+    "http.status_code": 500
+  },
+  "events": [
+    {
+      "name": "exception",
+      "timestamp": "2023-07-07T20:21:54.681109Z",
+      "attributes": {
+        "exception.type": "ZeroDivisionError",
+        "exception.message": "division by zero",
+        "exception.stacktrace": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.10/site-packages/opentelemetry/trace/__init__.py\", line 573, in use_span\n  yield span\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 2190, in wsgi_app\n  response = self.full_dispatch_request()\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1486, in full_dispatch_request\n  rv = self.handle_user_exception(e)\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1484, in full_dispatch_request\n  rv = self.dispatch_request()\n  File \"/usr/local/lib/python3.10/site-packages/flask/app.py\", line 1469, in dispatch_request\n  return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)\n  File \"//app.py\", line 25, in error\n  return eval('0/0')\n  File \"<string>\", line 1, in <module>\nZeroDivisionError: division by zero\n",
+        "exception.escaped": "False"
+      }
+    }
+  ],
+  "links": [],
+  "resource": {
+    "attributes": {
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.18.0",
+      "service.name": "python-flask"
+    },
+    "schema_url": ""
+  }
+}
+```
+</details>
+
+**Step 7.** Stop the app using Ctrl+C or ⌘-C.
 
 
 <a name="1.2.1-custom-spans"></a>
@@ -1083,7 +1146,7 @@ Some languages can be instrumented with without modifying the application code. 
 
 **Step 1.** Compare the code of the app with no instrumentation to the code of the app with traces instrumentation: `git diff --no-index java-springboot/bare java-springboot/complete-auto`
 
-**Step 2.** Run the app: `APP=java-springboot/bare docker-compose up --build`
+**Step 2.** Run the app: `APP=java-springboot/complete-auto docker-compose up --build`
 
 **Step 3.** Open the app in a web browser: [http://localhost:4321/](http://localhost:4321/)
 
