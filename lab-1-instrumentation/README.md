@@ -70,7 +70,11 @@ You can control the app using these endpoints:
 
 Before instrumenting the app, let's see how it behaves on its own. This will help us understand the effect of each instrumentation in the next sections of the lab.
 
-**Step 1.** Review the app code in a text editor: [`python-flask/bare/app.py`](python-flask/bare/app.py)
+**Step 1.** Review the app code in a text editor:
+
+* [`python-flask/bare/app.py`](python-flask/bare/app.py) - The application code.
+* [`python-flask/bare/requirements.txt`](python-flask/bare/requirements.txt) - The dependencies for the app.
+* [`python-flask/bare/Dockerfile`](python-flask/bare/Dockerfile) - Builds the app as a container.
 
 **Step 2.** Run the app: `APP=python-flask/bare docker-compose up --build`
 
