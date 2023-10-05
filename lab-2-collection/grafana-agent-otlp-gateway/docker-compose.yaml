@@ -20,7 +20,7 @@ services:
       - /etc/agent/config.river
     environment:
       - AGENT_MODE=flow
-      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
       - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}
       - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
       

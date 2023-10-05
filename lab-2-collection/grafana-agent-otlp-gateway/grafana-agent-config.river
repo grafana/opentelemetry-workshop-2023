@@ -22,7 +22,7 @@ otelcol.processor.batch "default" {
 
 otelcol.auth.basic "default" {
   username = env("GRAFANA_CLOUD_INSTANCE_ID")
-  password = env("GRAFANA_CLOUD_API_KEY")
+  password = env("GRAFANA_CLOUD_TOKEN")
 }
 
 otelcol.exporter.otlphttp "default" {

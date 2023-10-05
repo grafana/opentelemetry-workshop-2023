@@ -32,8 +32,8 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
     environment:
-      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
       - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}
       - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
     logging:
       driver: none
@@ -46,8 +46,8 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
     environment:
-      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
       - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}
       - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
     logging:
       driver: none
@@ -60,8 +60,8 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
     environment:
-      - GRAFANA_CLOUD_API_KEY=${GRAFANA_CLOUD_API_KEY}
       - GRAFANA_CLOUD_INSTANCE_ID=${GRAFANA_CLOUD_INSTANCE_ID}
+      - GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}
       - OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp-gateway-${GRAFANA_CLOUD_REGION}.grafana.net/otlp
     logging:
       driver: none

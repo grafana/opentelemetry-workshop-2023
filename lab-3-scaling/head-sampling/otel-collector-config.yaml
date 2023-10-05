@@ -18,7 +18,7 @@ extensions:
   basicauth:
     client_auth:
       username: ${env:GRAFANA_CLOUD_INSTANCE_ID}
-      password: ${env:GRAFANA_CLOUD_API_KEY}
+      password: ${env:GRAFANA_CLOUD_TOKEN}
         
 service:
   extensions: [basicauth]

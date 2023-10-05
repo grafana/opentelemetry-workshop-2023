@@ -77,20 +77,23 @@ You will need a Grafana Cloud stack using the free tier.
 1. Your stack will be ready in less than a minute.
 
 
-<a name="2.3-create-an-api-key"></a>
-#### 2.3. Create an API key
+<a name="2.3-create-a-token"></a>
+#### 2.3. Create a token
 
 1. Sign into Grafana Cloud: [https://grafana.com/auth/sign-in/](https://grafana.com/auth/sign-in/)
-1. On the left navigation menu, click `API Keys` and then click `+ Add API Key`.
-1. Give it a name and select the `MetricsPublisher` role.
-1. Click `Copy to Clipboard` to copy the API Key. You won't be able to see it again. If you lose it, you can create a new one.
-1. Save your API Key in your copy of the `./env` file in this repo as the value of `GRAFANA_CLOUD_API_KEY`.
+1. On the left navigation menu, click `Access Policies` and then click `Create access policy`.
+1. Give it a name, select `(all stacks)` as your realm, and select the checkboxes under `Write` for the `metrics`, `logs`, and `traces` resources.
+1. Click `Create`
+1. Click `Add token` under your newly created access policy.
+1. Give your token a name and then click `Create`.
+1. Click `Copy to Clipboard` to copy the token. You won't be able to see it again. If you lose it, you can create a new one.
+1. Save your token in your copy of the `./env` file in this repo as the value of `GRAFANA_CLOUD_TOKEN`.
 
 Example:
 
 ```sh
 # Grafana Cloud
-GRAFANA_CLOUD_API_KEY=paste_your_api_key_here
+GRAFANA_CLOUD_TOKEN=paste_your_token_here
 ...
 ```
 
@@ -106,7 +109,7 @@ Once you have provisioned a stack, you will need to update your local copy of th
 
 |Environment Variable|Instructions|
 |--------------------|------------|
-|**`GRAFANA_CLOUD_API_KEY`**|Completed in [Section 2.3](#2.3-create-an-api-key).|
+|**`GRAFANA_CLOUD_TOKEN`**|Completed in [Section 2.3](#2.3-create-a-token).|
 |**`GRAFANA_CLOUD_INSTANCE_ID`**|Under **Grafana > Details**, copy the value of "Instance ID".<br/><br/>Example: `123456`|
 |**`GRAFANA_CLOUD_REGION`**|Under **Grafana > Details**, copy the value of "Zone" without the parentheses.<br/><br/>Example: `prod-us-central-0`|
 |**`GRAFANA_STACK_LOKI_URL`**|Under **Loki > Details**, copy the value of "URL" and append it with `/loki/api/v1/push`<br/><br/>Example: `https://logs-prod-017.grafana.net/loki/api/v1/push`|
